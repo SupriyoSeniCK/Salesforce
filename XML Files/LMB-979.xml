@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+<types>
+    <members>loan__Loan_Payment_Transaction__c.Insurance_Product_Number__c</members>
+    <members>loan__Loan_Payment_Transaction__c.Insurance_Product_Name__c</members>
+    <members>loan__Loan_Payment_Transaction__c.Insurance_Refund_GST__c</members>
+    <members>loan__Loan_Payment_Transaction__c.Insurance_Refund_Prem__c</members>
+    <members>loan__Loan_Payment_Transaction__c.Insurance_Refund_S_Duty__c</members>
+    <members>loan__Loan_Payment_Transaction__c.Insurance_Refund_Total__c</members>
+    <members>loan__Loan_Payment_Transaction__c.Original_State__c</members>
+    <members>loan__Loan_Payment_Transaction__c.Q2_Product_Code__c</members>
+    <members>Insurance__c.Loan_Product_Name__c</members>
+    <name>CustomField</name>
+</types>
+<types>
+    <members>TriggerHandlerInsurance</members>
+    <members>InsuranceConstants</members>
+    <members>InsuranceTriggerTest</members>
+    <name>ApexClass</name>
+</types>
+<types>
+    <members>Loan_Payment_Transactions</members>
+    <name>ReportType</name>
+</types>
+<types>
+	<members>RBAC_Insurance</members>
+	<name>PermissionSet</name>
+</types>
+<types>
+    <members>LFS_Finance/Q2_AU_PL_INS_TXN_SUMM</members>
+    <members>LFS_Finance/Q2_AU_PL_INS_INCOME_UEP_AND_DAC</members>
+    <name>Report</name>
+</types>
+    <types>
+    <members>LoanInsuranceCancellationBatchQuery</members>
+    <name>CustomLabel</name>
+</types>
+<types>
+    <members>Insurance__c.Policy_Cancellation_Reason_Validation</members>
+    <name>ValidationRule</name>
+</types>
+	<version>55.0</version>
+</Package>

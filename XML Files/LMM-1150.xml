@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+<types>
+    <members>EquifaxVedaResponseParser</members>
+    <members>EquifaxVedaResponseParserHelper</members>
+    <members>EquifaxHardPullTest</members>
+    <members>EquifaxHardPullMLAdapter</members>
+    <members>EquifaxHardPullMLCallout</members>
+    <members>EquifaxVedaResponseParserTest</members>
+    <members>PreIllionBatchJob</members>
+    <members>PreIllionBatchTest</members>
+    <members>IntegrationUtil</members>
+    <members>IntegrationUtilTest</members>
+    <members>EquifaxIntegrationConstants</members>
+    <members>EquifaxCreditPullAdapter</members>
+    <name>ApexClass</name>
+</types>
+<types>
+    <members>EquifaxHardPullReqXml</members>
+    <members>EquifaxHardPullResTest</members>
+    <members>EquifaxHardPullResponseXml</members>
+    <name>StaticResource</name>
+</types>
+	<version>55.0</version>
+</Package>

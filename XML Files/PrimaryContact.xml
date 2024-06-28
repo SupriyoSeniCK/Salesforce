@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+	<types>
+		<members>F2FPOAPrimaryContactController</members>
+		<members>F2FPOAPrimaryContactControllerTest</members>
+		<members>F2FPartyPrimaryContactController</members>
+		<members>F2FPartyPrimaryContactControllerTest</members>
+		<name>ApexClass</name>
+	</types>
+	<types>
+		<members>clcommon__Party__c.Account_Legal_Entity__c</members>
+		<members>clcommon__Party__c.Primary_Contact__c</members>
+		<members>clcommon__Relationship__c.Primary_Contact__c</members>
+		<name>CustomField</name>
+	</types>
+	<types>
+		<members>Primary_Contact_Field_On_Party_Upsert</members>
+		<members>Primary_Contact_Update_on_Application_Creation</members>
+		<members>Relationship_On_Update</members>
+		<name>Flow</name>
+	</types>
+	<version>58.0</version>
+</Package>

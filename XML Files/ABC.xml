@@ -1,0 +1,10 @@
+<types>
+    <members>QuoteWebServiceAPI</members>
+    <members>QuoteWebServiceAPIHelper</members>
+    <members>IntegrationUtil</members>
+    <members>AggregatorHelper</members>
+    <members>AggregatorBrokerHandler</members>
+    <members>AggregatorConstants</members>
+    <members>QuoteJSONWrapper</members>
+    <name>ApexClass</name>
+</types>

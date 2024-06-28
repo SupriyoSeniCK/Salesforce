@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+<types>
+    <members>LoanPayoffQuoteTriggerTest</members>
+    <members>LoanPayoffQuoteTriggerHandler</members>
+    <members>InsuranceConstants</members>
+    <members>TriggerHandlerInsurance</members>
+    <members>LoanInsuranceCancellationBatchTest</members>
+    <members>LoanInsuranceCancellationDagBatch</members>
+    <members>InsuranceTriggerTest</members>
+    <name>ApexClass</name>
+</types>
+<types>
+    <members>LoanPayoffQuoteTrigger</members>
+    <name>ApexTrigger</name>
+</types>
+<types>
+    <members>LoanInsuranceCancellationBatchQuery</members>
+    <name>CustomLabel</name>
+</types>
+<types>
+    <members>ML_Insurance_Reports</members>
+    <name>ReportFolder</name>
+</types>
+<types>
+    <members>Testing_Report/Paid_Out_Motor_Loans_with_CCI_Insurance</members>
+    <name>Report</name>
+  </types>
+    <types>
+    <members>CL_Contracts_with_Insurance</members>
+    <name>ReportType</name>
+  </types>
+	<version>55.0</version>
+</Package>

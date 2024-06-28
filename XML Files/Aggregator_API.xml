@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <version>58.0</version>
+    <types>
+        <members>QuoteWebServiceAPI</members>
+        <members>QuoteWebServiceAPIHelper</members>
+        <members>QuoteWebServiceAPIHandler</members>
+        <members>IntegrationUtil</members>
+        <members>AggregatorAPIHelper</members>
+        <members>AggregatorBrokerHandler</members>
+        <members>AggregatorConstants</members>
+        <members>QuoteJSONWrapper</members>
+        <members>QuoteWebServiceAPITest</members>
+        <members>QuoteWebServiceAPIHelperTest</members>
+        <members>QuoteWebServiceAPIHandlerTest</members>
+        <members>IntegrationUtilTest</members>
+        <members>AggregatorAPIHelperTest</members>
+        <members>AggregatorBrokerHandlerTest</members>
+        <members>BrokerPortalUtil</members>
+        <members>BrokerRecalculateQuote</members>
+        <members>BrokerConvertToApp</members>
+        <members>QuoteToAppWebServiceAPI</members>
+        <members>QuoteToAppWebServiceHandler</members>
+        <members>QuoteToAppWebServiceAPITest</members>
+        <members>QuoteToAppJSONWrapper</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>ML Aggregator API Only</members>
+        <name>Profile</name>
+    </types>
+    <types>
+        <members>Aggregator_API_Access</members>
+        <name>PermissionSet</name>
+    </types>
+    <types>
+        <members>AggregatorApiPermissionSets</members>
+        <members>AggregatorApiProfiles</members>
+        <name>CustomLabel</name>
+    </types>
+    <types>
+        <members>genesis__Quick_Quotes__c.Submitted_Via_Aggregator_API__c</members>
+        <members>genesis__Applications__c.Submitted_Via_Aggregator_API__c</members>
+        <name>CustomField</name>
+    </types>
+</Package>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+	<types>
+		<members>AccountPartyDetailsController</members>
+        <members>AccountPartyDetailsControllerTest</members>
+		<members>AccountPartyDetailsHelper</members>
+		<members>AccountPartyDetailsParser</members>
+		<name>ApexClass</name>
+	</types>
+	<types>
+		<members>AccountPartyDetails</members>
+		<name>ApexPage</name>
+	</types>
+	<types>
+        <members>clcommon__Party__c.Key_Info__c</members>
+		<name>CustomField</name>
+	</types>
+    <types>
+        <members>Account-Borrower Page Layout</members>
+        <members>Account-Investor Page Layout</members>
+    <name>Layout</name>
+    </types>
+	<types>
+		<members>accountPartyDetails</members>
+		<name>LightningComponentBundle</name>
+	</types>
+    <types>
+    <members>Account_Record_Page</members>
+    <members>Borrower_Account_Record_Page</members>
+    <members>Investor_Account_Record_Page</members>
+    <name>FlexiPage</name>
+  </types>
+	<version>58.0</version>
+</Package>

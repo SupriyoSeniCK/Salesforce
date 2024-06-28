@@ -1,0 +1,16 @@
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>ExportPaymentHistoryInPDFController</members>
+        <members>ExportPaymentHistoryInPDFControllerTest</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>Pioneer_Logo</members>
+        <name>StaticResource</name>
+    </types>
+    <types>
+        <members>DownloadPaymentHistoryInPDF</members>
+        <name>ApexPage</name>
+    </types>
+    <version>59.0</version>
+</Package>
