@@ -8,10 +8,6 @@
 		<name>ApexClass</name>
 	</types>
 	<types>
-		<members>AccountPartyDetails</members>
-		<name>ApexPage</name>
-	</types>
-	<types>
         <members>clcommon__Party__c.Key_Info__c</members>
 		<name>CustomField</name>
 	</types>

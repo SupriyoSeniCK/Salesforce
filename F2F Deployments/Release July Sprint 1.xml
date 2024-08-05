@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+	<types>
+		<members>AccountPartyDetailsController</members>
+        <members>AccountPartyDetailsControllerTest</members>
+		<members>AccountPartyDetailsHelper</members>
+		<members>AccountPartyDetailsParser</members>
+        <members>NinetyDaysPastMaturityEmailJob</members>
+        <members>NinetyDaysPastMaturityEmailJobTest</members>
+		<name>ApexClass</name>
+	</types>
+        <types>
+        <members>unfiled$public/Fourteen_days_past_due_Arrears_Notification</members>
+        <members>unfiled$public/Ninety_Days_Past_Maturity_Notification</members>
+        <members>unfiled$public/Release_of_funds_notification</members>
+        <name>EmailTemplate</name>
+    </types>
+    <types>
+        <members>Record_Trigger_IO_Sale</members>
+        <members>Record_Trigger_Send_Email_When_Excess_Amount_on_LPT</members>
+        <name>Flow</name>
+    </types>
+	<types>
+        <members>clcommon__Party__c.Key_Info__c</members>
+        <members>clcommon__Collateral__c.Names_of_Informal_Occupiers_of_Property__c</members>
+        <members>clcommon__Collateral__c.Occupiers_of_property_under_lease__c</members>
+        <members>FOLK2FOLK_Configurable_Parameters__c.Business_Support_Internal_Mail__c</members>
+		<name>CustomField</name>
+	</types>
+    <types>
+        <members>Account-Borrower Page Layout</members>
+        <members>Account-Investor Page Layout</members>
+    <name>Layout</name>
+    </types>
+	<types>
+		<members>accountPartyDetails</members>
+		<name>LightningComponentBundle</name>
+	</types>
+    <types>
+        <members>Account_Record_Page</members>
+        <members>Borrower_Account_Record_Page</members>
+        <members>Investor_Account_Record_Page</members>
+    <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>folk2folkStaticCss</members>
+        <name>StaticResource</name>
+    </types>
+    <types>
+      <members>Ninety_Days_Past_Maturity_Internal_Mail</members>
+      <name>CustomLabel</name>
+    </types>
+	<version>58.0</version>
+</Package>

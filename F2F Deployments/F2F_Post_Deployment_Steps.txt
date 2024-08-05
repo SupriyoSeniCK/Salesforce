@@ -1,0 +1,7 @@
+1432468984 - Back Office - Improve account contact information
+1. Give profile permisssions to Key_Info__c field
+2. Give apex class permissions to required profile, --AccountPartyDetailsController, AccountPartyDetailsHelper, AccountPartyDetailsParser
+3. Active the Account record pages for required profile and record types.
+
+
+

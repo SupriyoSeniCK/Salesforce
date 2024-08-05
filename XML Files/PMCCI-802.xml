@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>PMCYearlyHolidayListFetcherJob</members>
+        <members>PMCYearlyHolidayListFetcherJobTest</members>
+        <members>LeadReturnFileSplitJobTest</members>
+        <members>LeadReturnFileSplitJob</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>CLX_Org_Parameters__c.PMC_Current_Year_Holiday_List__c</members>
+        <members>CLX_Org_Parameters__c.Lead_Return_File_Max_Lines__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>pioneerJS</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>clcommon__CL_Portal/CACEAGAHAf3a0519cf68d4e938cd46aff8c3bc4dc</members>
+        <name>Document</name>
+    </types>
+    <version>59.0</version>
+</Package>
