@@ -9,10 +9,11 @@
         <members>Folk2FolkConstantValues</members>
         <members>FetchInvestmentOrderAPI</members>
         <members>FetchInvestorDashboardDetailsAPI</members>
+        <members>CrossCoreController</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
-		<members>manualCommsLoanApplication</members>
+		<members>manualCommsLoanApplication</members> 
 		<members>manualCommunications</members>
 		<name>LightningComponentBundle</name>
 	</types>
@@ -32,6 +33,10 @@
 	<types>
 		<members>CSS_COLORS</members>
 		<name>StaticResource</name>
+	</types>
+    <types>
+		<members>Manual_Comms_Permissions</members>
+		<name>customPermission</name>
 	</types>
     <types>
 		<members>Manual_Communications</members>

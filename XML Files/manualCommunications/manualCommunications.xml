@@ -3,6 +3,8 @@
 	<types>
 		<members>ManualCommunicationsController</members>
 		<members>ManualCommunicationsControllerTest</members>
+		<members>ManualCommunicationsHelper</members>
+		<members>ValidationUtil</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
@@ -13,6 +15,10 @@
 	<types>
 		<members>Manual_Comms_Permission_Set</members>
 		<name>PermissionSet</name>
+	</types>
+	<types>
+		<members>Postal_Communication_Emails</members>
+		<name>CustomLabel</name>
 	</types>
     <types>
         <members>unfiled$public/Manual_Comms_Email_Template</members>

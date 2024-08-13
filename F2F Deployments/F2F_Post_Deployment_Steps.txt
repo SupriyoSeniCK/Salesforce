@@ -1,7 +1,14 @@
+Release July Sprint 1
 1432468984 - Back Office - Improve account contact information
 1. Give profile permisssions to Key_Info__c field
 2. Give apex class permissions to required profile, --AccountPartyDetailsController, AccountPartyDetailsHelper, AccountPartyDetailsParser
 3. Active the Account record pages for required profile and record types.
 
 
-
+Release July Sprint 2
+1. Make manual Comms Tabs default on for all the profiles
+2. Change the integration configurations for BWA address check issue, Match with preprod
+3. Schedule the incorrectPayoutNotification Job at 9:10 AM daily
+4. Populate Incorrect_Payout_Notification_Email_List__c with the required email addresses
+5. Populate Incorrect_Payout_Notification_Job_Size__c in custom settings
+6. populate Seven_Days_Past_Due_Interest_Notification_Emails custom label with enquiries@folk2folk.com
