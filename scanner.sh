@@ -25,7 +25,6 @@ displayPmdErrorsForModifiedApexClass() {
     local pmdReportPathModified="$1"
     local pmdReportPathModifiedBase="$2"
     local previousClassName=""
-    local validationFailed=0
 
     # Skip the first line (header) and loop through each line of the modified PMD report
     tail -n +2 "$pmdReportPathModified" | while IFS=, read -r _ _ _ classPath lineNumber _ pmdError errorDescription _; do
@@ -34,8 +33,8 @@ displayPmdErrorsForModifiedApexClass() {
         # Check if the class has changed from the previous one
         if [[ "$previousClassName" != "$className" ]]; then
             # Count occurrences of the class name in the base and modified PMD reports
-            local pmdCountInBase=$(grep -o "$className" "$pmdReportPathModifiedBase" | wc -l)
-            local pmdCountInCurrent=$(grep -o "$className" "$pmdReportPathModified" | wc -l)
+            local pmdCountInBase=$(grep -o "/$className" "$pmdReportPathModifiedBase" | wc -l)
+            local pmdCountInCurrent=$(grep -o "/$className" "$pmdReportPathModified" | wc -l)
             echo "Class: \"$className, PMD Errors before changes: $pmdCountInBase, PMD Errors after changes: $pmdCountInCurrent"
             # Check if the PMD counts in current changes is greater than the existing PMD counts
             if [ "$pmdCountInCurrent" -gt "$pmdCountInBase" ]; then
@@ -44,17 +43,14 @@ displayPmdErrorsForModifiedApexClass() {
                 echo "---------------------------------------------------------------------------------------------------"
                 echo "Class: \"$className, PMD Errors before changes: $pmdCountInBase, PMD Errors after changes: $pmdCountInCurrent"
                 echo "---------------------------------------------------------------------------------------------------"
-                validationFailed=1
+                # Check if validation failed and exit
+                exit 1
             fi
         fi
         
         # Update the previous class name for the next iteration
         previousClassName="$className"
     done
-    # Check if validation failed and exit after processing all lines
-    if [[ "$validationFailed" == "1" ]]; then
-        exit 1
-    fi
 }
 
 displayPmdErrorsForNewApexClass() {
@@ -62,7 +58,6 @@ displayPmdErrorsForNewApexClass() {
     # $1 - Path to the new PMD report
     local pmdReportPathNew="$1"
     local previousClassName=""
-    local validationFailed=0
 
     # Skip the first line (header) and loop through each line of the modified PMD report
     tail -n +2 "$pmdReportPathNew" | while IFS=, read -r _ _ _ classPath lineNumber _ pmdError errorDescription _; do
@@ -70,21 +65,18 @@ displayPmdErrorsForNewApexClass() {
         local className=$(basename "$classPath")
         # Check if the class has changed from the previous one
         if [[ "$previousClassName" != "$className" ]]; then           
-            local pmdCount=$(grep -o "$className" "$pmdReportPathNew" | wc -l)
+            local pmdCount=$(grep -o "/$className" "$pmdReportPathNew" | wc -l)
             echo "---------------------------------------------------------------------------------------------------"
             echo "         VALIDATION FAILED: PMD Error Found in Apex Class: \"$className                            "
             echo "---------------------------------------------------------------------------------------------------"
             echo "Class: \"$className, PMD Error Count: $pmdCount"
             echo "---------------------------------------------------------------------------------------------------"
-            validationFailure=1
+            # Check if validation failed and exit
+            exit 1
         fi
         # Update the previous class name for the next iteration
         previousClassName="$className"
     done
-    # Check if validation failed and exit after processing all lines
-    if [[ "$validationFailed" == "1" ]]; then
-        exit 1
-    fi
 }
 
 # Function to execute PMD scan and display results
