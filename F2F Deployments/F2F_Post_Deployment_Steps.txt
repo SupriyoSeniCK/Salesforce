@@ -12,3 +12,7 @@ Release July Sprint 2
 4. Populate Incorrect_Payout_Notification_Email_List__c with the required email addresses
 5. Populate Incorrect_Payout_Notification_Job_Size__c in custom settings
 6. populate Seven_Days_Past_Due_Interest_Notification_Emails custom label with enquiries@folk2folk.com
+
+
+Release August Sprint 1
+1. Change "Postal_Communication_Emails" custom label email address to "loanmanagement@folk2folk.com"

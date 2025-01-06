@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+	<types>
+		<members>F2FLoanConstants</members>
+		<members>PastMaturityMAFAdjustmentJob</members>
+		<members>PastMaturityMAFAdjustmentJobTest</members>
+		<members>ValidationUtil</members>
+		<members>ValidationUtilTest</members>
+		<name>ApexClass</name>
+	</types>
+	<types>
+		<members>FOLK2FOLK_Configurable_Parameters__c.Past_Maturity_MAF_Increment_Rate__c</members>
+		<members>FOLK2FOLK_Configurable_Parameters__c.Threshold_Days_For_MAF_Increment__c</members>
+		<members>FOLK2FOLK_Configurable_Parameters__c.X3_Month_Past_Maturity_MAF_Increment_Rat__c</members>
+		<name>CustomField</name>
+	</types>
+	<types>
+		<members>Apex_Class_Exception_Emails</members>
+		<name>CustomLabel</name>
+	</types>
+	<version>60.0</version>
+</Package>

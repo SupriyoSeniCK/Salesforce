@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>unfiled$public/C1_First_Missed_Payment_Email</members>
+        <members>unfiled$public/C2_30_Day_Delinquent_Email</members>
+        <members>unfiled$public/C3_60_Day_Delinquent_Email</members>
+        <members>unfiled$public/C4_90_Day_Delinquent_RTC_Email</members>
+        <members>unfiled$public/C5_Post_RTC_Default_Email</members>
+        <members>unfiled$public/C7_Promise_To_Pay_Email</members>
+        <members>unfiled$public/C8_Broken_Promise_To_Pay_Email</members>
+        <name>EmailTemplate</name>
+    </types>
+    <version>59.0</version>
+</Package>

@@ -1,0 +1,153 @@
+/**
+ * @description       : 
+ * @author            : Supriyo Seni
+ * @group             : 
+ * @last modified on  : 09-30-2024
+ * @last modified by  : Supriyo Seni
+**/
+SavePoint savePointInst;
+try{
+    List<Document> docList = [SELECT id, 
+                                    name, 
+                                    body 
+                                FROM Document
+                                WHERE id = '015Vd000001aGaL'
+                                AND FolderId = '00lVd000000M1NF'];
+    Map<Integer,String> rowVsLoanNameMap = new Map<Integer,String>();
+    Map<String,String> rowVsTransactionDateMap = new Map<String,String>();
+    Map<String,String> rowVsRepaymentStartDateMap = new Map<String,String>();
+    Map<String,String> rowVsInterestRateMap = new Map<String,String>();
+    Map<String,String> rowVsTermMap = new Map<String,String>();
+    Integer count = 0;
+    String documentContent = docList[0]?.body?.toString();
+    List<String> rowList = documentContent.split('\n');
+    System.debug(rowList);
+    for(String eachRow : rowList){
+        if(count == 0){
+            count++;
+            System.debug('eachrow = ' +eachRow);
+            if(eachRow.trim() != ('Loan Id,interest Rate,Term,Repayment Start Date ,Transaction Date ').trim()){
+                throw new customexception('Invalid Header');
+            }
+            continue;
+        }
+        List<String> recordList = (eachRow.trim()).split(',');
+        rowVsLoanNameMap.put(count,(recordList[0]).trim());
+        rowVsInterestRateMap.put((recordList[0]).trim(),(recordList[1]).trim());
+        rowVsTermMap.put((recordList[0]).trim(),(recordList[2]).trim());
+        rowVsRepaymentStartDateMap.put((recordList[0]).trim(),(recordList[3]).trim());
+        rowVsTransactionDateMap.put((recordList[0]).trim(),(recordList[4]).trim());
+        count++;
+    }
+    Date currentSysDate = ValidationUtil.getcurrentSystemDate();
+    List<loan__Loan_Account__c> loanList = [SELECT id,
+                                                    Name,
+                                                    Maximum_Interest_Rate__c,
+                                                    loan__Interest_Rate__c,
+                                                    loan__Term_Cur__c,
+                                                    Number_of_Bills_generated__c,
+                                                    loan__Frequency_of_Loan_Payment__c,
+                                                    loan__Pmt_Amt_Cur__c,
+                                                    loan__Next_Installment_Date__c,
+                                                    loan__Interest_Only_Period__c,
+                                                    loan__Maturity_Date_Current__c,
+                                                    (SELECT Id,
+                                                            loan__Loan_Account__c,
+                                                            loan__Due_Date__c,
+                                                            loan__Is_Archived__c
+                                                    FROM loan__Repayment_Schedule__r
+                                                    WHERE loan__Is_Archived__c = FALSE
+                                                    AND loan__Due_Date__c >=: currentSysDate),
+                                                    (SELECT Id,
+                                                        loan__Certificate_Rate__c,
+                                                        loan__Status__c
+                                                    FROM loan__Investors_Loans__r
+                                                    WHERE loan__Status__c =: Folk2FolkConstantValues.ACTIVE_STATUS)
+                                            FROM loan__Loan_Account__c
+                                            WHERE Name IN : rowVsLoanNameMap.values()
+                                            AND loan__Invalid_Data__c = false
+                                            ];
+    System.debug(loanList);
+    loan.LoanActionFactory factory;
+    loan.LoanAction10 loanAction;
+    List<loan.FractionalizationParameters> fractionalizationParamsList = new List<loan.FractionalizationParameters>();
+    savePointInst = Database.setSavepoint();
+    for(loan__Loan_Account__c loanObj : loanList){
+        /* Counting remaining repayment scheedules */
+        Integer noOfInstallments = Integer.valueOf(rowVsTermMap.get(loanObj.Name));
+        //Integer noOfschedules ;
+        // if(loanObj.loan__Repayment_Schedule__r != null){
+        //     List<loan__Repayment_Schedule__c> repaymentSchedule = loanObj.loan__Repayment_Schedule__r ;
+        //     noOfInstallments = 12;
+        // }
+        //Date transactionDate = (new loan.GlobalLoanUtilFacade()).getCurrentSystemDate();
+        Date transactionDate = Date.valueOf(rowVsTransactionDateMap.get(loanObj.Name));
+        //Date repaymentStartDate = Date.valueOf(rowVsRepaymentStartDateMap.get(loanObj.Name));
+        Date repaymentStartDate = loanObj.loan__Next_Installment_Date__c;
+        Decimal interestRate = Decimal.valueOf(rowVsInterestRateMap.get(loanObj.Name));
+        Boolean maintainDelinquency=  true;
+        Boolean actualInterestOnlyPayments = null;
+        Integer amortizationTerm = null;
+        Integer dueDay = repaymentStartDate.day();
+        String stepUpOption = null;
+        Decimal paymentAmount = loanObj.loan__Pmt_Amt_Cur__c;
+        Boolean regenerateInvAmzSchedule =  true;
+        Decimal interestOnlyPaymentAmt = null;
+        Boolean keepSamePaymentAmount = false;
+        String rescheduleBalance = Folk2FolkConstantValues.PRINCIPAL_REMAINING;
+        loan.LoanRescheduleParameters rescheduleParams = new loan.LoanRescheduleParameters(loanObj.Id,
+                                                        transactionDate,
+                                                        repaymentStartDate,
+                                                        null,
+                                                        null,
+                                                        noOfInstallments,
+                                                        noOfInstallments-1,
+                                                        interestRate,
+                                                        loanObj.loan__Frequency_of_Loan_Payment__c,
+                                                        maintainDelinquency,
+                                                        actualInterestOnlyPayments,
+                                                        amortizationTerm,
+                                                        dueDay,
+                                                        stepUpOption,
+                                                        interestOnlyPaymentAmt,
+                                                        regenerateInvAmzSchedule);
+
+        List<loan.LoanRescheduleParameters.ProposedRepaymentPlan> repaymentPlanList = rescheduleParams.getRepaymentPlan();
+        // This will set the repayment plan as per flexible method plan
+        if( !repaymentPlanList.isEmpty()) {
+            rescheduleParams.setRepaymentPlan(repaymentPlanList);
+        }
+
+        // Rescheduling the loan
+        factory = new loan.LoanActionFactory();
+        loanAction = factory.getLoanAction10API();
+        loanAction.rescheduleALoan(rescheduleParams);
+
+        // Fetching Active Investment Order
+        List<loan__Investor_Loan__c> ioList = loanObj.loan__Investors_Loans__r;
+
+        for(loan__Investor_Loan__c invOrder : ioList) {
+            // Creating instance of fractionalizationpramaters which will be needed to update certificate rate
+            loan.FractionalizationParameters fractionalizationParams = new loan.FractionalizationParameters(loanObj.Id,
+                                            invOrder.Id,
+                                            interestRate,
+                                            transactionDate);
+            fractionalizationParamsList.add(fractionalizationParams);
+        }
+    }
+
+    if( !fractionalizationParamsList.isEmpty()) {
+        loan.FractionalizationFactory factoryObject = new loan.FractionalizationFactory();
+
+        loan.AbstractInvestorLoanActions investorLoanActionObject = factoryObject.getInvestorLoanActionAPI();
+        // Updating certificate rate
+        List<loan__Investor_Loan_Account_Txns__c> result = investorLoanActionObject.bulkCertificateRateChange(fractionalizationParamsList);
+    }
+}catch(Exception ex){
+    if(savePointInst != null){
+        Database.rollback(savePointInst);
+    }
+    System.debug('Exception occured ;'+ ex);
+    Loan__Batch_Process_log__c batchLogObj = F2FUtil.insertBatchProcesslogException(ex, '30 Sept Reschedule Loan Script Run');
+    insert batchLogObj;
+}
