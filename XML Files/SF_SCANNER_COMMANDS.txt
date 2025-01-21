@@ -84,7 +84,7 @@ sf scanner run --target "**/*.js,!**/IgnoreMe.js"
 2. Run the below command to generate eslint-lwc report for all js files with severity in html format
 
 sf scanner run --format html \
-                    --outfile cicd-utils/pmd-util/pmd-rule/elint-results.html \
+                    --outfile cicd-utils/pmd-util/pmd-rule/eslint-results.html \
                     --target '**/*.js,!**/IgnoreMe.js' \
                     --engine eslint-lwc \
                     --normalize-severity
@@ -92,14 +92,14 @@ sf scanner run --format html \
 3. Run the below command to generate eslint-lwc report for a specfic js file in html format
 
 sf scanner run --format html 
-                    --outfile cicd-utils/pmd-util/pmd-rule/elint-results.html 
+                    --outfile cicd-utils/pmd-util/pmd-rule/eslint-results.html 
                     --target 'force-app/main/default/lwc/manualCommunications/manualCommunications.js,!**/IgnoreMe.js' 
                     --engine eslint-lwc
 
 4. Run the below command to generate eslint-lwc report for a specfic js file in html format with severity
 
 sf scanner run --format html \
-                --outfile cicd-utils/pmd-util/pmd-rule/elint-results.html \
+                --outfile cicd-utils/pmd-util/pmd-rule/eslint-results.html \
                 --target 'force-app/main/default/lwc/manualCommunications/manualCommunications.js,!**/IgnoreMe.js' \
                 --engine eslint-lwc  \
                 --normalize-severity
@@ -107,7 +107,7 @@ sf scanner run --format html \
 5.  Run the below command to generate eslint-lwc report for a specfic LWC component file in html format with severity
 
 sf scanner run --format html \
-                --outfile cicd-utils/pmd-util/pmd-rule/elint-results.html \
+                --outfile cicd-utils/pmd-util/pmd-rule/eslint-results.html \
                 --target 'force-app/main/default/lwc/manualCommunications,!**/IgnoreMe.js' \
                 --engine eslint-lwc \
                 --normalize-severity 
@@ -115,7 +115,7 @@ sf scanner run --format html \
 6. Run the below command to generate eslint-lwc report for a specfic js file in csv format with severity
 
 sf scanner run --format csv \
-                --outfile cicd-utils/pmd-util/pmd-rule/elint-results.csv \
+                --outfile cicd-utils/pmd-util/pmd-rule/eslint-results.csv \
                 --target 'force-app/main/default/lwc/manualCommunications/manualCommunications.js,!**/IgnoreMe.js' \
                 --engine eslint-lwc  \
                 --normalize-severity
@@ -123,7 +123,7 @@ sf scanner run --format csv \
 7. Run the below command to generate eslint-lwc report for multiple LWC-js files in html format with severity
 
 sf scanner run --format html \
-                --outfile cicd-utils/pmd-util/pmd-rule/elint-results.html \
+                --outfile cicd-utils/pmd-util/pmd-rule/eslint-results.html \
                 --target 'force-app/main/default/lwc/manualCommunications/manualCommunications.js,force-app/main/default/lwc/manualCommsLoanApplication/manualCommsLoanApplication.js!**/IgnoreMe.js,!**/IgnoreMe.js' \
                 --engine eslint-lwc \
                 --normalize-severity 
@@ -133,3 +133,6 @@ sf scanner run --format html \
 sf scanner run --target 'force-app/main/default/lwc/manualCommunications,force-app/main/default/lwc/manualCommsLoanApplication,!**/IgnoreMe.js' \
         --engine eslint-lwc \
         --normalize-severity
+
+NOTES:
+https://developer.salesforce.com/docs/platform/lightning-components-security/guide/lws-tools-lint.html
