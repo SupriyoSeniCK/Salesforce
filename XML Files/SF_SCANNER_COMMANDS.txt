@@ -1,0 +1,135 @@
+
+************************************************************  ************************************************************   ************************************************************
+                                                                            PMD REPORT GENERATION 
+************************************************************  ************************************************************   ************************************************************
+
+
+1. Run the following command in the VS Code terminal to generate the PMD report for all Apex classes in your branch. The report will be saved in HTML format as pmd-results.html.
+
+sf scanner:run --engine "pmd" \
+                   --format "html" \
+                   --pmdconfig "cicd-utils/pmd-util/pmd-rule/pmdRules.xml" \
+                   --outfile "cicd-utils/pmd-util/pmd-rule/pmd-results.html" \
+                   --target "force-app/main" \
+                   --normalize-severity
+
+2. Run the following command in the VS Code terminal to generate the PMD report for a specific apex class in your branch. The report will be saved in HTML format as pmd-results.html.
+
+sf scanner:run --engine "pmd" \
+                   --format "html" \
+                   --pmdconfig "cicd-utils/pmd-util/pmd-rule/pmdRules.xml" \
+                   --outfile "cicd-utils/pmd-util/pmd-rule/pmd-results.html" \
+                   --target "force-app/main/default/classes/SPECIFIED_APEX_CLASS_NAME.cls" \
+                   --normalize-severity
+
+3. Run the following command in the VS Code terminal to display the PMD reports in the terminal itself for a specific apex class in your branch. 
+
+sf scanner:run --engine "pmd" \
+                   --pmdconfig "cicd-utils/pmd-util/pmd-rule/pmdRules.xml" \
+                   --target "force-app/main/default/classes/SPECIFIED_APEX_CLASS_NAME.cls" \
+                   --normalize-severity
+
+4. Run the following command in the VS Code terminal to generate the PMD report for some specific apex classs in your branch. The report will be saved in HTML format as pmd-results.html.
+
+sf scanner:run --engine "pmd" \
+                   --format "html" \
+                   --pmdconfig "cicd-utils/pmd-util/pmd-rule/pmdRules.xml" \
+                   --outfile "cicd-utils/pmd-util/pmd-rule/pmd-results.html" \
+                   --target "force-app/main/default/classes/SPECIFIED_APEX_CLASS_NAME_1.cls,force-app/main/default/classes/SPECIFIED_APEX_CLASS_NAME_2.cls" \
+                   --normalize-severity
+
+5. Run the following command in the VS Code terminal to generate the PMD report for all Apex classes in your branch. The report will be saved in HTML format as pmd-results.html.
+
+sf scanner:run --engine "pmd" \
+                   --format "csv" \
+                   --pmdconfig "cicd-utils/pmd-util/pmd-rule/pmdRules.xml" \
+                   --outfile "cicd-utils/pmd-util/pmd-rule/pmd-results.csv" \
+                   --target "force-app/main" \
+                   --normalize-severity
+
+6. Run the following command in the VS Code terminal to generate the PMD report for a specific apex class in your branch. The report will be saved in csv format as pmd-results.csv.
+
+sf scanner:run --engine "pmd" \
+                   --format "csv" \
+                   --pmdconfig "cicd-utils/pmd-util/pmd-rule/pmdRules.xml" \
+                   --outfile "cicd-utils/pmd-util/pmd-rule/pmd-results.csv" \
+                   --target "force-app/main/default/classes/SPECIFIED_APEX_CLASS_NAME.cls" \
+                   --normalize-severity
+
+7. Run the following command in the VS Code terminal to display the PMD reports in the terminal itself for a specific apex class in your branch. 
+
+sf scanner:run --engine "pmd" \
+                   --pmdconfig "cicd-utils/pmd-util/pmd-rule/pmdRules.xml" \
+                   --target "force-app/main/default/classes/SPECIFIED_APEX_CLASS_NAME.cls" \
+                   --normalize-severity
+
+8. Run the following command in the VS Code terminal to generate the PMD report for some specific apex classs in your branch. The report will be saved in csv format as pmd-results.csv.
+
+sf scanner:run --engine "pmd" \
+                   --format "csv" \
+                   --pmdconfig "cicd-utils/pmd-util/pmd-rule/pmdRules.xml" \
+                   --outfile "cicd-utils/pmd-util/pmd-rule/pmd-results.html" \
+                   --target "force-app/main/default/classes/SPECIFIED_APEX_CLASS_NAME_1.cls,force-app/main/default/classes/SPECIFIED_APEX_CLASS_NAME_2.cls" \
+                   --normalize-severity
+
+
+************************************************************  ************************************************************   ************************************************************
+                                                                    eslint REPORT GENERATION (FOR js FILES)
+************************************************************  ************************************************************   ************************************************************
+
+1. Run for eslint problems for all JS files in your branch and display in the termimal
+
+sf scanner run --target "**/*.js,!**/IgnoreMe.js" 
+
+2. Run the below command to generate eslint-lwc report for all js files with severity in html format
+
+sf scanner run --format html \
+                    --outfile cicd-utils/pmd-util/pmd-rule/elint-results.html \
+                    --target '**/*.js,!**/IgnoreMe.js' \
+                    --engine eslint-lwc \
+                    --normalize-severity
+
+3. Run the below command to generate eslint-lwc report for a specfic js file in html format
+
+sf scanner run --format html 
+                    --outfile cicd-utils/pmd-util/pmd-rule/elint-results.html 
+                    --target 'force-app/main/default/lwc/manualCommunications/manualCommunications.js,!**/IgnoreMe.js' 
+                    --engine eslint-lwc
+
+4. Run the below command to generate eslint-lwc report for a specfic js file in html format with severity
+
+sf scanner run --format html \
+                --outfile cicd-utils/pmd-util/pmd-rule/elint-results.html \
+                --target 'force-app/main/default/lwc/manualCommunications/manualCommunications.js,!**/IgnoreMe.js' \
+                --engine eslint-lwc  \
+                --normalize-severity
+
+5.  Run the below command to generate eslint-lwc report for a specfic LWC component file in html format with severity
+
+sf scanner run --format html \
+                --outfile cicd-utils/pmd-util/pmd-rule/elint-results.html \
+                --target 'force-app/main/default/lwc/manualCommunications,!**/IgnoreMe.js' \
+                --engine eslint-lwc \
+                --normalize-severity 
+
+6. Run the below command to generate eslint-lwc report for a specfic js file in csv format with severity
+
+sf scanner run --format csv \
+                --outfile cicd-utils/pmd-util/pmd-rule/elint-results.csv \
+                --target 'force-app/main/default/lwc/manualCommunications/manualCommunications.js,!**/IgnoreMe.js' \
+                --engine eslint-lwc  \
+                --normalize-severity
+
+7. Run the below command to generate eslint-lwc report for multiple LWC-js files in html format with severity
+
+sf scanner run --format html \
+                --outfile cicd-utils/pmd-util/pmd-rule/elint-results.html \
+                --target 'force-app/main/default/lwc/manualCommunications/manualCommunications.js,force-app/main/default/lwc/manualCommsLoanApplication/manualCommsLoanApplication.js!**/IgnoreMe.js,!**/IgnoreMe.js' \
+                --engine eslint-lwc \
+                --normalize-severity 
+
+8.Run the below command to display eslint-lwc report in vs code terminal for multiple LWC files with severity
+
+sf scanner run --target 'force-app/main/default/lwc/manualCommunications,force-app/main/default/lwc/manualCommsLoanApplication,!**/IgnoreMe.js' \
+        --engine eslint-lwc \
+        --normalize-severity
