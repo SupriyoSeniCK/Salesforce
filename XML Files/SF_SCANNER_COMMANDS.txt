@@ -68,7 +68,7 @@ sf scanner:run --engine "pmd" \
 sf scanner:run --engine "pmd" \
                    --format "csv" \
                    --pmdconfig "cicd-utils/pmd-util/pmd-rule/pmdRules.xml" \
-                   --outfile "cicd-utils/pmd-util/pmd-rule/pmd-results.html" \
+                   --outfile "cicd-utils/pmd-util/pmd-rule/pmd-results.csv" \
                    --target "force-app/main/default/classes/SPECIFIED_APEX_CLASS_NAME_1.cls,force-app/main/default/classes/SPECIFIED_APEX_CLASS_NAME_2.cls" \
                    --normalize-severity
 
