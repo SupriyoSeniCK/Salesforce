@@ -21,7 +21,12 @@ Step 4: Cherry-Pick Commits
 Run the following command in your VS Code terminal to bring your changes from the dev branch:
 
 git cherry-pick 1abc 2xyz
+
 This will apply the selected commits to your local UAT branch. If there are merge conflicts, Git will display them.
+
+To cherry-pick all the commits from commit A to commit B (where A is older than B), run:
+
+git cherry-pick A^..B
 
 
 Step 5: Resolve Merge Conflicts
@@ -33,7 +38,7 @@ Advantages of This Approach
 
 You don't have to retrieve your changes from your org every time.
 Additional modified files (e.g., allTestClasses.txt and post_deployment_steps.txt) will be automatically committed along with your previous changes, eliminating the need to create/modify them again.
-You don’t have to provide commit messages every time you commit in the uat branch.
+You don't have to provide commit messages every time you commit in the uat branch.
 
 Additional Git Commands
 
@@ -44,3 +49,4 @@ git cherry-pick --continue
 If needed, you can abort the cherry-pick process.
 
 git cherry-pick --abort
+
