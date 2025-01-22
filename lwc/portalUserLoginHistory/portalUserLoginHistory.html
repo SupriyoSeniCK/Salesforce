@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Login History" icon-name="utility:clock">
+        <template if:true={loginHistory}>
+            <lightning-datatable
+                key-field="id"
+                data={loginHistory}
+                columns={columns}
+                hide-checkbox-column="true"
+            >
+            </lightning-datatable>
+        </template>
+        <template if:true={error}>
+            Error loading data.
+        </template>
+    </lightning-card>
+</template>

@@ -1,0 +1,307 @@
+<!--
+  @description       : HTML for LWC manualCommsLoanApplication
+  @author            : Supriyo Seni
+  @group             : LWC
+  @last modified on  : 07-29-2024
+  @last modified by  : Supriyo Seni
+-->
+
+<template>
+    <!--
+    @description : Preview of the email being sent to the respective investors 
+    -->
+    <template if:true={isPreviewEmail}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header" style="background-color: #f2f2f2;">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hidePreviewEmailModalBox}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">Email Preview</h2>
+                </header>
+                <div class="spinner">
+                    <template if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+                    </template>
+                </div>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-var-p-around_medium">
+                    <lightning-formatted-rich-text value={previewHtmlEmail}></lightning-formatted-rich-text>
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <lightning-button class="slds-m-left--x-small strong-text" variant="destructive" label="Close" title="Close" 
+                        onclick={hidePreviewEmailModalBox} slot="center">
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!--
+    @description : Compose Email Box
+    -->
+    <template if:true={isEmailComposerBoxVisible}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_large slds-hyphenate strong-text">Manual Comms Email Composer</h2>
+                </header>
+                <div class="spinner">
+                    <template if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+                    </template>
+                </div>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium slds-form-element_compound"
+                    id="modal-content-id-1">
+                    <!-- Default/basic -->
+                    <form>
+                        <div class="slds-p-horizontal_small">
+                            <!-- from address selection -->
+                            <lightning-combobox
+                                name="fromAddress"
+                                label="From Address"
+                                placeholder="Select a from address"
+                                options={fromAddressOptions}
+                                value={selectedFromAddress}
+                                onchange={handleFromAddressChange}
+                                required 
+                                class="slds-var-m-bottom_medium" >
+                            </lightning-combobox>
+                            <lightning-input label="Subject" value={emailSubject} onchange={handleSubjectChange} class="slds-m-top_medium" required="true"  placeholder="Type Email Subject..."></lightning-input>
+                            <lightning-input-rich-text label="Body" label-visible="true" class="slds-m-top_medium"
+                                value={emailBody}
+                                placeholder="Type Email Body without header..."
+                                onchange={handleEmailBodyChange}
+                                required="true"
+                                disabled-categories="INSERT_CONTENT"
+                                field-level-help="This is the body of the email that will be sent to investors. This body should not contain any headers, as they will be added automatically.">
+                            </lightning-input-rich-text>
+                            <lightning-input type="file" multiple label="Attachments" onchange={handleFileUploaded} class="slds-m-top_medium" accept="application/pdf"></lightning-input>
+                            <br/>
+                            <template if:true={isFilePresent}>
+                                <template for:each={filesData} for:item="imgName" for:index="index">
+                                    {imgName.fileName}
+                                    <span key={imgName.fileName} data-id={index} onclick={removeReceiptImage} class="removeImage">x</span> &nbsp;
+                                </template>
+                                <br/>
+                                <br/>
+                            </template>
+                        </div>
+                    </form>
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <lightning-button  variant="Success" label="Save" title="Save" 
+                        onclick={handleComposeEmailSaveButton} slot="actions">
+                    </lightning-button>
+                    <lightning-button  class="slds-m-left--x-small strong-text" variant="Brand" label="Close" title="Close" 
+                        onclick={hideEmailComposerModalBox} slot="actions">
+                    </lightning-button>
+                    <lightning-button  class="slds-m-left--x-small strong-text" variant="Neutral" label="Reset" title="Reset" type="reset" 
+                        onclick={handleComposeEmailResetButton} slot="actions">
+                    </lightning-button>
+                    <lightning-button class="slds-m-left--x-small strong-text" variant="destructive" label="Cancel" title="Cancel" 
+                        onclick={hideEmailComposerModalBox} slot="actions">
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!--
+    @description : Dialogue box to send email to the investors
+    -->
+    <template if:true={proceedWithSendingEmail}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header" style="background-color: #f2f2f2;">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideSendEmailModelBox}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">Are you Sure Want to Proceed wtih Sending Emails to the following Investors?</h2>
+                </header>
+                <div class="spinner">
+                    <template if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+                    </template>
+                </div>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-var-p-around_medium">
+                    <!-- <Strong>Are you Sure Want to Proceed wtih Sending Emails to the following Investors?</Strong> -->
+                    <div style="height : auto;">
+                        <lightning-datatable class="slds-m-around_large slds-table_bordered slds-table_col-bordered" 
+                            data={selectedInvestorList} 
+                            columns={selectedInvestorColumns}
+                            key-field="Id" 
+                            hide-checkbox-column="true">
+                        </lightning-datatable>
+                    </div>
+                </div>
+
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="Success" label="Confirm and Send Email" class="strong-text" title="Confirm and Send Email" type="reset" 
+                        onclick={handleSendEmailToInvestors} slot="actions">
+                    </lightning-button>
+                    <lightning-button class="slds-m-left--x-small strong-text" variant="destructive" label="No" title="Close" 
+                        onclick={hideSendEmailModelBox} slot="actions">
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!--
+    @description : Dialogue box to confirm details for selected contracts
+    -->
+    <template if:true={proceedWithLoanApplications}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header" style="background-color: #f2f2f2;">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideLoanApplicationModelBox}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">Confirm Details To Proceed</h2>
+                </header>
+                <div class="spinner">
+                    <template if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+                    </template>
+                </div>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-var-p-around_medium">
+                    <h2>You have selected the following CL Contracts:</h2>
+                    <div style="height : auto;">
+                        <lightning-datatable class="slds-m-around_large slds-table_bordered slds-table_col-bordered" 
+                            data={selectedLoanApplicationList} 
+                            columns={selectedLoanColumns} 
+                            key-field="Id" 
+                            hide-checkbox-column="true">
+                        </lightning-datatable>
+                    </div>
+                </div>
+
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="Brand" label="Confirm" class="strong-text" title="Confirm" type="reset" 
+                        onclick={handleInvestorDetails} slot="actions">
+                    </lightning-button>
+                    <lightning-button class="slds-m-left--x-small strong-text" variant="destructive" label="Close" title="Close" 
+                        onclick={hideLoanApplicationModelBox} slot="actions">
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Basic spinner -->
+    <div class="spinner">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+        </template>
+    </div>
+    <template if:true={showLoanApplicationSearchBox}>
+        <div class="slds-grid slds-gutters" style="padding-top: 0px; padding-buttom: 10px;">
+            <div class="slds-col slds-size_4-of-12">
+                <lightning-Input type="search" placeholder="Search Loan Application.... " style="color:rgb(26, 6, 46); padding-top: 0px;" 
+                    onkeyup={handleLoanApplicationSearchKeyUp} 
+                    onchange={handleLoanApplicationSearchFilter}>
+                </lightning-input>
+            </div>
+            <div class="slds-col slds-size_1-of-12 slds-align_absolute-center" style="padding-top: 0.9rem;">
+                <lightning-button variant="brand" label="Search" title="search" icon-name="utility:search" 
+                    onclick={handleLoanApplicationSearchClick}>
+                </lightning-button>
+            </div>
+            <div class="slds-col slds-size_3-of-12 slds-align_absolute-center" style="padding-top: 0.9rem;">
+                <template if:true={loanApplicationRowSelected}>
+                    <strong>
+                        Loan Applications Selected :&nbsp; 
+                    </strong>
+                    <strong>
+                        {countLoanApplicationRecords}
+                    </strong>
+            </template>
+            </div>
+            <div class="slds-col slds-size_4-of-12 slds-text-align_right slds-p-right_medium slds-p-top_large" style="padding-top: 0.9rem;">
+                <template if:true={loanApplicationRowSelected}>
+                    <lightning-button class="strong-text" variant="Brand" label="Proceed with Selection" title="Approve" slot="actions" 
+                        onclick={handleLoanApplicationSelection}>
+                    </lightning-button>
+                    <lightning-button class="slds-m-left--x-small strong-text" variant="Destructive" label="Clear Selection" title="Reject" slot="actions" 
+                        onclick={handleContractClearSelectionButton}>
+                    </lightning-button>
+                </template>
+            </div>
+        </div>
+        <template if:true={showSearchedContractList}>
+            <div style="height : auto;">
+                <lightning-datatable class="slds-m-around_large slds-table_bordered slds-table_col-bordered" 
+                    data={loanApplicationList} 
+                    columns={loanApplicationColumns} 
+                    key-field="Id" 
+                    onrowselection={handleLoanApplicationRowclick} 
+                    selected-rows={preSelectedLoanApplicationIdList}>
+                </lightning-datatable>
+            </div>
+        </template>
+    </template>
+    <template if:true={showLoanApplicationInvestors}>
+        <div class="slds-grid slds-gutters" style="padding-top: 0px; padding-buttom: 10px;">
+            <div class="slds-col  slds-size_3-of-12 slds-text-align_left">
+                <h2 class="slds-text-heading_medium slds-hyphenate">Investor Account List</h2>
+            </div>
+            <div class="slds-col slds-size_3-of-12 slds-align_absolute-center">
+                <strong>
+                    Investors Selected :&nbsp; 
+                </strong>
+                <strong>
+                    {countOfInvestorSelected}
+                </strong>
+            </div>
+            <div class="slds-col slds-size_6-of-12 slds-text-align_right slds-p-right_medium">
+                <template if:true={showLoanApplicationInvestors}>
+                    <lightning-button variant="Brand" label="Compose Email" title="Email" slot="actions" 
+                        onclick={handleComposeEmailButton} 
+                        disabled={isComposeEmailButtonDisabled}>
+                    </lightning-button>
+                    <lightning-button class="slds-m-left--x-small strong-text" variant="Success" label="Send Email" title="Approve" slot="actions" 
+                        disabled={isSendEmailButtonDisabled} 
+                        onclick={openSendEmailDialogueBox}>
+                    </lightning-button>
+                    <lightning-button class="slds-m-left--x-small strong-text" variant="Destructive" label="Clear Selection" title="clear" slot="actions"
+                        onclick={clearSelectedInvestor} 
+                        disabled={isClearSelectedInvestorButtonDisabled}>
+                    </lightning-button>
+                    <lightning-button class="slds-m-left--x-small strong-text" variant="Neutral" label="Back to Search" title="clear" slot="actions" 
+                        onclick={handleBackToContractSearchButton}>
+                    </lightning-button>
+                </template>
+            </div>
+        </div>
+        <div style="height : auto;">
+            <lightning-datatable class="slds-m-around_large slds-table_bordered slds-table_col-bordered" 
+                data={loanApplicationInvestorList} 
+                columns={investorDisplayColumns} 
+                key-field="Id" 
+                onrowselection={handleLoanApplicationInvestorClick} 
+                selected-rows={preSelectedInvestorRows}
+                onrowaction={callRowActionForInvestors}>
+            </lightning-datatable>
+        </div>
+    </template>
+</template>

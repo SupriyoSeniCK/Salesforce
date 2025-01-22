@@ -1,0 +1,109 @@
+# Specifing a custom docker image from Docker Hub as build environment and providing auth creds.
+image:
+  name: pioneermilitarycredit/sfdx-cli-image
+  username: $DOCKER_HUB_USERNAME
+  password: $DOCKER_HUB_PASSWORD
+
+# Defining set of steps so that it gets utilized for a set of events.
+definitions:
+  steps:
+    # CI Check Steps Mainly focused on validation of components
+    - step: &pr-validate
+        name: $BITBUCKET_PR_DESTINATION_BRANCH
+        script:
+          - |
+            if [[ $BITBUCKET_PR_DESTINATION_BRANCH != "dev" && $BITBUCKET_PR_DESTINATION_BRANCH != "qa" && $BITBUCKET_PR_DESTINATION_BRANCH != "uat" && $BITBUCKET_PR_DESTINATION_BRANCH != "preprod" && $BITBUCKET_PR_DESTINATION_BRANCH != "master" ]]; then
+              echo "PR Validation not needed for $BITBUCKET_BRANCH branch"
+              exit 0
+            fi
+          - chmod +x ./.bitbucket/workflows/pr-validation.sh && source ./.bitbucket/workflows/pr-validation.sh
+          - Salesforce Authentication
+          - Delta Package Generation
+          - PMD Static Code Analysis
+          - Test Class List Generation
+          - Component Validation
+
+    # Auto Deployment Step will perform migration to target organization after validation.
+    - step: &auto-deploy
+        name: $BITBUCKET_BRANCH
+        script:
+          - |
+            if [[ $BITBUCKET_BRANCH != "qa" && $BITBUCKET_BRANCH != "uat" && $BITBUCKET_BRANCH != "preprod" ]]; then
+              echo "Auto deployment not allowed for $BITBUCKET_BRANCH branch"
+              exit 0
+            fi
+          - chmod +x ./.bitbucket/workflows/deployment.sh && source ./.bitbucket/workflows/deployment.sh
+          - Salesforce Authentication
+          - Delta Package Generation
+          - Test Class List Generation
+          - Component Validation
+          - Quick Deploy
+          - SFDMU Data Deploy
+          - Skuid Pages Deploy
+
+    # Manual Deployment Step will perform migration to target organization after validation.
+    - step: &manual-deploy
+        name: $BITBUCKET_BRANCH
+        script:
+          - |
+            if [[ $BITBUCKET_BRANCH != "dev" && $BITBUCKET_BRANCH != "master" ]]; then
+              echo "Manual deployment not allowed for $BITBUCKET_BRANCH branch"
+              exit 0
+            fi
+          - chmod +x ./.bitbucket/workflows/deployment.sh && source ./.bitbucket/workflows/deployment.sh
+          - Salesforce Authentication
+          - Delta Package Generation
+          - Test Class List Generation
+          - Component Validation
+          - Quick Deploy
+          - SFDMU Data Deploy
+          - Skuid Pages Deploy
+
+# Definition of pipeline and the events that is going to trigger it.
+pipelines:
+  # These Set of steps will be executed after each Pull request against any specific branch
+  pull-requests:
+    # Configuration for pull requests targeting any branch
+    "**":
+      - step:
+          <<: *pr-validate
+          deployment: PR-VALIDATION
+          name: PR Validation
+
+  custom:
+    # Manual deployment trigger for DEV ORG
+    dev-deploy:
+      - step:
+          <<: *manual-deploy
+          deployment: DEV
+          name: Deployment (DEV)
+
+    # Manual deployment trigger for PROD ORG
+    prod-deploy:
+      - step:
+          <<: *manual-deploy
+          deployment: PROD
+          name: Deployment (PROD)
+
+  # These Set of steps will be executed after each marge (except dev & master) against a specific branch
+  branches:
+    # Auto deployment trigger on marge event in qa branch for QA ORG
+    qa:
+      - step:
+          <<: *auto-deploy
+          deployment: QA
+          name: Deployment (QA)
+
+    # Auto deployment trigger on marge event in uat branch for UAT ORG
+    uat:
+      - step:
+          <<: *auto-deploy
+          deployment: UAT
+          name: Deployment (UAT)
+
+    # Auto deployment trigger on marge event in preprod branch for PRE-PROD ORG
+    preprod:
+      - step:
+          <<: *auto-deploy
+          deployment: PREPROD
+          name: Deployment (PRE-PROD)

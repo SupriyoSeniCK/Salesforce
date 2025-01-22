@@ -1,0 +1,29 @@
+<!--
+  @description       : Account Party Details Page
+  @author            : Supriyo Seni
+  @group             : LWC HTML
+  @last modified on  : 06-20-2024
+  @last modified by  : Supriyo Seni
+-->
+<template>
+    <div class="spinner">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+            </lightning-spinner>
+        </template>
+    </div>
+    <lightning-accordion active-section-name={section} allow-multiple-sections-open="true">
+        <lightning-accordion-section name="A" label="Party Details" class="accordion_section">
+            <div class="slds-border_top" style="height : auto">
+                <lightning-datatable class="slds-table_bordered slds-table_col-bordered"
+                    data={allPartyList} columns={partyDetailsColumns} column-widths-mode="fixed" wrap-text-max-lines="2" key-field="id" 
+                    hide-checkbox-column="true" onsave={handleSave} draft-values={draftValues}>
+                </lightning-datatable>
+            </div>
+            <template if:true={displayNoDataMessage}>
+                <strong class="slds-m-left--x-small slds-align_absolute-center" style="color:rgb(0, 174, 255);">
+                    No records to display</strong>
+            </template>
+        </lightning-accordion-section>
+    </lightning-accordion>
+</template>
